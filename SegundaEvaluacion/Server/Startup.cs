@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using SegundaEvaluacion.Shared.Datos.Entidades;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace SegundaEvaluacion.Server
 {
@@ -24,8 +26,15 @@ namespace SegundaEvaluacion.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //concexion a la base de datos
             services.AddDbContext<dbContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("Conn")));
+            // para complemento swagger
+            services.AddSwaggerGen(c =>
+            { c.SwaggerDoc("1v", new OpenApiInfo { Title = "SegundaEvaluacion", Version = "1v" }); });
+            services.AddControllersWithViews().AddJsonOptions(x =>
+            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
+            //deafault por sistema
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -35,6 +44,10 @@ namespace SegundaEvaluacion.Server
         {
             if (env.IsDevelopment())
             {
+                //para swagger
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/1v/swagger.json", "SegundaEvaluacion 1v"));
+                //default
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
