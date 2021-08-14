@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SegundaEvaluacion.Shared.Datos.Entidades
 {
-    [Index(nameof(CodPais), Name = "UQ_Pais_Cod", IsUnique = true)]
+    [Index(nameof(CodPais), Name = "UQ_Pais_CodPais", IsUnique = true)]
 
     public class Pais
     {
@@ -20,7 +20,8 @@ namespace SegundaEvaluacion.Shared.Datos.Entidades
 
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         [MaxLength(120, ErrorMessage = "El maximo de caracteres es {1}.")]
-        public string NombrePais { get; set; }
+        public string NombrePais { get; set; } 
+       
     }
 
 }

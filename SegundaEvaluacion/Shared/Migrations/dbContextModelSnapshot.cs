@@ -36,14 +36,9 @@ namespace SegundaEvaluacion.Shared.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
-                    b.Property<int?>("Personadni")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Personadni");
-
-                    b.HasIndex(new[] { "CodPais" }, "UQ_Pais_Cod")
+                    b.HasIndex(new[] { "CodPais" }, "UQ_Pais_CodPais")
                         .IsUnique();
 
                     b.ToTable("Paises");
@@ -51,15 +46,22 @@ namespace SegundaEvaluacion.Shared.Migrations
 
             modelBuilder.Entity("SegundaEvaluacion.Shared.Datos.Entidades.Persona", b =>
                 {
-                    b.Property<int>("dni")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("NacionalidadId")
+                        .HasColumnType("int");
 
                     b.Property<string>("apellido")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("dni")
+                        .HasMaxLength(8)
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("fecha_nacimiento")
                         .HasColumnType("datetime2");
@@ -69,24 +71,23 @@ namespace SegundaEvaluacion.Shared.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("dni");
+                    b.HasKey("Id");
 
-                    b.HasIndex(new[] { "dni" }, "UQ_dni")
+                    b.HasIndex("NacionalidadId");
+
+                    b.HasIndex(new[] { "dni" }, "UQ_Persona_dni")
                         .IsUnique();
 
                     b.ToTable("Personas");
                 });
 
-            modelBuilder.Entity("SegundaEvaluacion.Shared.Datos.Entidades.Pais", b =>
-                {
-                    b.HasOne("SegundaEvaluacion.Shared.Datos.Entidades.Persona", null)
-                        .WithMany("Paises")
-                        .HasForeignKey("Personadni");
-                });
-
             modelBuilder.Entity("SegundaEvaluacion.Shared.Datos.Entidades.Persona", b =>
                 {
-                    b.Navigation("Paises");
+                    b.HasOne("SegundaEvaluacion.Shared.Datos.Entidades.Pais", "Nacionalidad")
+                        .WithMany()
+                        .HasForeignKey("NacionalidadId");
+
+                    b.Navigation("Nacionalidad");
                 });
 #pragma warning restore 612, 618
         }

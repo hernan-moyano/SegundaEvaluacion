@@ -8,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace SegundaEvaluacion.Shared.Datos.Entidades
 {
-    [Index(nameof(dni), Name = "UQ_dni", IsUnique = true)]
+    [Index(nameof(dni), Name = "UQ_Persona_dni", IsUnique = true)]
     public class Persona
     {
-        [Key]
+        public int Id { get; set; }
+
+        [Display(Name = "DNI")]
+        [Required(ErrorMessage = "El dni es requerido")]
+        [MaxLength(8)]
         public int dni { get; set; }
 
         [Display(Name = "Nombres")]
@@ -31,7 +35,7 @@ namespace SegundaEvaluacion.Shared.Datos.Entidades
         [Display(Name = "Nacionalidad")]
         [Required(ErrorMessage = "La Nacionalidad es requerida")]
         [MaxLength(120)]
-        public List<Pais> Paises { get; set; }
+        public Pais Nacionalidad { get; set; }
     }
 
 }
