@@ -33,11 +33,11 @@ namespace SegundaEvaluacion.Server.Controllers
         public async Task<ActionResult<Persona>> Get(int id)
         {
 
-            var Personas = await context.Personas.Where(X => X.dni == id).FirstOrDefaultAsync();
+            var Personas = await context.Personas.Where(X => X.Id == id).FirstOrDefaultAsync();
 
             if (Personas == null)
             {
-                return NotFound($"no existe el Personas con id igual a {id}.");
+                return NotFound($"no existe la Persona con id igual a {id}.");
             }
 
             return Personas;
@@ -66,20 +66,20 @@ namespace SegundaEvaluacion.Server.Controllers
 
         public async Task<ActionResult<Persona>> Put(int id, [FromBody] Persona Personas)
         {
-            if (id != Personas.dni)
+            if (id != Personas.Id)
             {
                 return BadRequest("datos incorrectos");
             }
 
 
-            var na = await context.Personas.Where(X => X.dni == id).FirstOrDefaultAsync();
+            var na = await context.Personas.Where(X => X.Id == id).FirstOrDefaultAsync();
             na.nombre = Personas.nombre;
             na.apellido = Personas.apellido;
             na.fecha_nacimiento = Personas.fecha_nacimiento;
 
             if (na == null)
             {
-                return NotFound($"no existe el Personas a modificar.");
+                return NotFound($"no existe la Persona a modificar.");
             }
             try
             {
@@ -99,18 +99,18 @@ namespace SegundaEvaluacion.Server.Controllers
         public async Task<ActionResult> Delete(int id)
         {
 
-            var Personas = await context.Personas.Where(X => X.dni == id).FirstOrDefaultAsync();
+            var Personas = await context.Personas.Where(X => X.Id == id).FirstOrDefaultAsync();
 
             if (Personas == null)
             {
-                return NotFound($"no existe el Personas con id igual a {id}.");
+                return NotFound($"no existe la Persona con id igual a {id}.");
             }
 
             try
             {
                 context.Personas.Remove(Personas);
                 await context.SaveChangesAsync();
-                return Ok($"la Persona {Personas.nombre} {Personas.apellido} ha sido borra-da");
+                return Ok($"la Persona {Personas.nombre} {Personas.apellido} ha sido borrada");
             }
             catch (Exception e)
             {
